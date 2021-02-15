@@ -1,0 +1,77 @@
+syntax = "proto3";
+package grpc;
+
+option java_multiple_files = true;
+option java_package = "grpc";
+option java_outer_classname = "EchoServiceProto";
+
+message EmptyRequestResponse {}
+
+message EchoRequest{
+    string message = 1;
+}
+
+message EchoResponse{
+    string message = 1;
+}
+
+message AddNodeRequest {
+    string headline = 1;
+    string text = 2;
+}
+
+message IdResponse {
+    int32 id = 1;
+}
+
+message AddLabelRequest {
+    string text = 1;
+}
+
+message IdRequest {
+    int32 id = 1;
+}
+
+message GetAllLabelsResponse {
+    repeated string text = 1;
+    repeated int32 id = 2;
+}
+
+message GetAllNodesResponse {
+    repeated string headline = 1;
+    repeated string text = 2;
+    repeated int32 id = 3;
+}
+
+message SetLabelsToNodeRequest {
+    int32 id = 1;
+    repeated int32 labels = 2;
+}
+
+message AddFileToNodeRequest {
+    int32 id = 1;
+    string name = 2;
+    bytes data = 3;
+}
+
+message GetFileFromNodeRequest {
+    int32 id = 1;
+    string name = 2;
+}
+
+message GetFileResponse {
+    bytes data = 1;
+}
+
+service EchoService{
+    rpc addNode(AddNodeRequest) returns (IdResponse){}
+    rpc addLabel(AddLabelRequest) returns (IdResponse){}
+    rpc deleteLabel(IdRequest) returns (EmptyRequestResponse){}
+    rpc allLabels(EmptyRequestResponse) returns (GetAllLabelsResponse){}
+    rpc allNodes(EmptyRequestResponse) returns (GetAllNodesResponse){}
+    rpc addLabelsToNode(SetLabelsToNodeRequest) returns (EmptyRequestResponse){}
+    rpc serchNodeFromLabel(IdRequest) returns (GetAllLabelsResponse){}
+    rpc addFileToNode(AddFileToNodeRequest) returns (EmptyRequestResponse){}
+    rpc getFileFromNode(GetFileFromNodeRequest) returns (GetFileResponse){}
+    rpc echo(EchoRequest) returns (EchoResponse){}
+}
